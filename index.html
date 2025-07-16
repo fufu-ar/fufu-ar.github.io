@@ -1,0 +1,49 @@
+
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="json_local/mindar-image.prod.js"></script>
+    <script src="json_local/aframe.min.js"></script>
+    <script src="json_local/mindar-image-aframe.prod.js"></script>
+  </head>
+  <body>
+    <a-scene mindar-image="imageTargetSrc: ./src/target_files/back.mind; uiScanning: no;"
+            vr-mode-ui="enabled: false" 
+            device-orientation-permission-ui="enabled: false"
+            embedded
+            renderer="colorManagement: true, physicallyCorrectLights">
+
+    <a-assets>
+        <a-asset-item id="luobaoModel" src="src/3D_files/luobao.glb"></a-asset-item>
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity mindar-image-target="targetIndex: 0">
+        <a-gltf-model src="#luobaoModel" scale="1 1 1" position="0 0 0" rotation="80 0 0"></a-gltf-model>
+    </a-entity>
+
+    <script>
+        AFRAME.registerComponent("mindar-follow", {
+            schema: {
+                lerpFactor: {type: "number", default: 0.01}
+            },
+            tick: function () {
+                const marker = this.el.parentEl.object3D;
+                const model = this.el.object3D;
+                if (marker.visible) {
+                    model.visible = true;
+                    model.position.lerp(marker.position, this.data.lerpFactor);
+                    model.quaternion.slerp(marker.quaternion, this.data.lerpFactor);
+                } else {
+                    model.visible = false;
+                }
+            }
+        });
+
+        document.querySelector("#model").setAttribute("mindar-follow", "lerpFactor: 0.01");
+    </script>
+
+    </a-scene>
+  </body>
+</html>

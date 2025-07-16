@@ -1,0 +1,22 @@
+{
+  "name": "ar-deploy",
+  "version": "1.0.0",
+  "author": "fufu",
+  "homepage": "https://fufu-ar.github.io/ar-deploy",
+  "scripts": {
+    "start": "npx http-server ./"
+  },
+  "engines": {
+    "node": "^18",
+    "npm": "10.x"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "harp": "*"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "http-server": "^14.1.1",
+    "https-localhost": "^4.7.1"
+  }
+}
