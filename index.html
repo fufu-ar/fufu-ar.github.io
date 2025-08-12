@@ -1,49 +1,96 @@
-
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>小洛包AR - by fufu</title>
+    
+    <!-- 外部依赖 -->
     <script src="json_local/mindar-image.prod.js"></script>
     <script src="json_local/aframe.min.js"></script>
     <script src="json_local/mindar-image-aframe.prod.js"></script>
-  </head>
-  <body>
-    <a-scene mindar-image="imageTargetSrc: ./src/target_files/back.mind; uiScanning: no;"
-            vr-mode-ui="enabled: false" 
-            device-orientation-permission-ui="enabled: false"
-            embedded
-            renderer="colorManagement: true, physicallyCorrectLights">
+    
+    <!-- 样式文件 -->
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div class="camera-flash" id="cameraFlash"></div>
+    
+    <div class="ar-container">
+        <div class="ui-elements">
+            <div class="header-bar">
+                <div class="logo">小洛包AR - by fufu</div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span id="statusText">相机已就绪</span>
+                </div>
+            </div>
 
-    <a-assets>
-        <a-asset-item id="luobaoModel" src="src/3D_files/luobao.glb"></a-asset-item>
-    </a-assets>
+            <div class="scan-guide" id="scanGuide">
+                <div class="image-container">
+                    <img class="target-image" src="./src/target_files/back-rmbg.png" alt="识别目标">
+                    <img class="scan-overlay" src="src/ui_files/scan-image.png" alt="扫描指引">
+                </div>
+                <div class="scan-text">请对准识别图</div>
+                <div class="scan-tip">
+                    将识别图保持在视野中央<br>
+                    保持手机稳定，距离适中
+                </div>
+            </div>
 
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+            <div class="camera-btn" id="cameraBtn" title="拍照保存">📷</div>
 
-    <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model src="#luobaoModel" scale="1 1 1" position="0 0 0" rotation="80 0 0"></a-gltf-model>
-    </a-entity>
+            <div class="control-panel">
+                <div class="control-btn" id="helpBtn" title="使用说明">帮助</div>
+            </div>
+        </div>
 
-    <script>
-        AFRAME.registerComponent("mindar-follow", {
-            schema: {
-                lerpFactor: {type: "number", default: 0.01}
-            },
-            tick: function () {
-                const marker = this.el.parentEl.object3D;
-                const model = this.el.object3D;
-                if (marker.visible) {
-                    model.visible = true;
-                    model.position.lerp(marker.position, this.data.lerpFactor);
-                    model.quaternion.slerp(marker.quaternion, this.data.lerpFactor);
-                } else {
-                    model.visible = false;
-                }
-            }
-        });
+        <a-scene mindar-image="imageTargetSrc: ./src/target_files/back.mind; uiScanning: no;"
+                vr-mode-ui="enabled: false" 
+                device-orientation-permission-ui="enabled: false"
+                embedded
+                renderer="colorManagement: true, physicallyCorrectLights, preserveDrawingBuffer: true">
 
-        document.querySelector("#model").setAttribute("mindar-follow", "lerpFactor: 0.01");
-    </script>
+            <a-assets>
+                <a-asset-item id="luobaoModel" src="src/3D_files/luobao.glb"></a-asset-item>
+            </a-assets>
 
-    </a-scene>
-  </body>
+            <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+            <a-entity mindar-image-target="targetIndex: 0" id="arTarget">
+                <a-gltf-model src="#luobaoModel" scale="1 1 1" position="0 0 0" rotation="80 0 0"></a-gltf-model>
+            </a-entity>
+        </a-scene>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="photoPreviewOverlay" class="photo-preview-overlay">
+        <div class="photo-preview-container" id="previewContainer">
+            <div class="photo-close-btn" id="photoCloseBtn">✕</div>
+            <img id="previewImage" class="photo-preview-image" alt="拍照预览">
+            <div class="photo-preview-tip">右键或长按保存图片</div>
+        </div>
+    </div>
+
+    <div id="helpModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="modal-title">使用说明</h3>
+            <div class="modal-text">
+                <p>1. 将手机摄像头对准识别图片</p>
+                <p>2. 保持适当距离，确保图片完整显示在视野中</p>
+                <p>3. 保持手机稳定，等待识别完成</p>
+                <p>4. 识别成功后即可看到3D模型</p>
+                <p>5. 点击拍照按钮可保存当前画面</p>
+                <p>6. 若模型出现倾斜、拉伸等异常情况，请晃动摄像头重新识别</p>
+                <p><br>ps：本网页为个人学习用demo，如有任何问题或建议，欢迎联系邮箱fufu0615@foxmail.com。</p>
+            </div>
+            <button class="modal-close-btn" onclick="closeHelp()">我知道了</button>
+        </div>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="js/camera.js"></script>
+    <script src="js/ar-handler.js"></script>
+    <script src="js/app.js"></script>
+</body>
 </html>
