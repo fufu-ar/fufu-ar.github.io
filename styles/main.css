@@ -392,7 +392,7 @@ a-scene {
     display: none !important;
 }
 
-/* 在文件末尾添加 */
+/* 修改加载提示样式，移除进度条相关 */
 .loading-tip {
     position: fixed;
     top: 0;
@@ -405,7 +405,7 @@ a-scene {
     align-items: center;
     justify-content: center;
     opacity: 1;
-    transition: opacity 0.5s ease-out;
+    transition: opacity 0.8s ease-out;
 }
 
 .loading-tip.fade-out {
@@ -419,25 +419,26 @@ a-scene {
 }
 
 .loading-icon {
-    font-size: 48px;
-    margin-bottom: 20px;
-    animation: loadingPulse 1.5s ease-in-out infinite;
+    font-size: 64px;
+    margin-bottom: 24px;
+    animation: loadingFloat 2s ease-in-out infinite;
 }
 
-@keyframes loadingPulse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.1); opacity: 1; }
+@keyframes loadingFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
 }
 
 .loading-text {
     color: #fff;
-    font-size: 18px;
-    font-weight: 500;
-    margin-bottom: 12px;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .loading-sub {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 14px;
     line-height: 1.4;
 }

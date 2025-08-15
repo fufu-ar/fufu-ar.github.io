@@ -86,24 +86,10 @@ class ARHandler {
         })
         .then(() => {
             this.statusText.textContent = '请对准识别图';
-            // 隐藏加载提示
-            this.hideLoadingTip();
         })
         .catch((error) => {
             this.statusText.textContent = '相机权限被拒绝';
             alert('请允许访问摄像头以使用AR功能');
-            // 即使出错也隐藏加载提示
-            this.hideLoadingTip();
         });
-    }
-
-    hideLoadingTip() {
-        const loadingTip = document.getElementById('loadingTip');
-        if (loadingTip) {
-            loadingTip.classList.add('fade-out');
-            setTimeout(() => {
-                loadingTip.style.display = 'none';
-            }, 500);
-        }
     }
 }

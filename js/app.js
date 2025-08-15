@@ -1,9 +1,9 @@
-// 应用主入口
 class ARApp {
     constructor() {
         this.initHandlers();
         this.bindGlobalEvents();
         this.setupViewport();
+        this.showSplashScreen(); // 添加开屏显示
     }
 
     initHandlers() {
@@ -27,13 +27,6 @@ class ARApp {
             if (e.target === helpModal) {
                 this.closeHelp();
             }
-        });
-
-        // 页面加载完成
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                window.arHandler.initialize();
-            }, 1000);
         });
 
         // 防止双击缩放
@@ -63,6 +56,29 @@ class ARApp {
 
     updateViewport() {
         document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    }
+
+    // 简化的开屏显示方法
+    showSplashScreen() {
+        // 3秒后隐藏开屏并初始化AR
+        setTimeout(() => {
+            this.hideSplashScreen();
+            // 延迟初始化AR，确保开屏完全消失
+            setTimeout(() => {
+                window.arHandler.initialize();
+            }, 500);
+        }, 3000); // 固定3秒
+    }
+
+    // 隐藏开屏方法
+    hideSplashScreen() {
+        const loadingTip = document.getElementById('loadingTip');
+        if (loadingTip) {
+            loadingTip.classList.add('fade-out');
+            setTimeout(() => {
+                loadingTip.style.display = 'none';
+            }, 800);
+        }
     }
 
     closeHelp() {
