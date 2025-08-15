@@ -391,3 +391,53 @@ a-scene {
 .hidden {
     display: none !important;
 }
+
+/* 在文件末尾添加 */
+.loading-tip {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #66ccff;
+    z-index: 5000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.loading-tip.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-content {
+    text-align: center;
+    max-width: 80vw;
+}
+
+.loading-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    animation: loadingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+}
+
+.loading-text {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.loading-sub {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    line-height: 1.4;
+}
